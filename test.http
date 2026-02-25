@@ -1,0 +1,40 @@
+### Signup
+POST http://localhost:8000/api/signup
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "username": "user123"
+}
+
+### Login
+POST http://localhost:8000/api/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+### Logout
+POST http://localhost:8000/api/logout
+Authorization: Bearer <access_token from login response>
+POST http://localhost:8000/api/logout
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImI4MTI2OWYxLTIxZDgtNGYyZS1iNzE5LWMyMjQwYTg0MGQ5MCIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjU0MzIxL2F1dGgvdjEiLCJzdWIiOiIyNDczYjc4MS0wY2VkLTQwZTQtODVjNS05MzM3OGZmNDViN2MiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzcyMDI0MzU2LCJpYXQiOjE3NzIwMjA3NTYsImVtYWlsIjoiY2NiYXlhZG9nQHVwLmVkdS5waCIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWwiOiJjY2JheWFkb2dAdXAuZWR1LnBoIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiMjQ3M2I3ODEtMGNlZC00MGU0LTg1YzUtOTMzNzhmZjQ1YjdjIiwidXNlcm5hbWUiOiJjY2JheWFkb2cifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc3MjAyMDc1Nn1dLCJzZXNzaW9uX2lkIjoiMjQ1ZTRlYWItYzA0YS00MTgxLWExYjktNTRiYmE2OTBlYWQxIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.6Ga0UqgDY3adG4SqLC_0XU8K9RWPVe1abFuu2f6oNZ1iuf3P_Y1RezVxD7mPDpfx-zsakmZvsmm14Q5d2uaXZw"
+}
+
+### get user geo
+GET http://localhost:8000/home/user
+Content-Type: application/json
+
+### get user geo
+POST http://localhost:8000/home/search
+Content-Type: application/json
+
+{
+  "ip": "66.249.79.32"
+}

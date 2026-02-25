@@ -1,6 +1,4 @@
 
-
-
 INSERT INTO auth.users (
     id, 
     email, 

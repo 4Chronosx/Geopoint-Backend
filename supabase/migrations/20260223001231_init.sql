@@ -17,7 +17,7 @@ CREATE TABLE search_history (
 
 CREATE TABLE geo_info (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    search_id UUID REFERENCES searches(id) ON DELETE CASCADE,
+    search_id UUID REFERENCES search_history(id) ON DELETE CASCADE,
     hostname TEXT,
     city TEXT NOT NULL,
     region TEXT NOT NULL,
@@ -30,10 +30,12 @@ CREATE TABLE geo_info (
 );
 
 -- Enable Row Level Security 
-ALTER TABLE search_history ENABLE ROW LEVEL Security
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE search_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE geo_info ENABLE ROW LEVEL SECURITY;
 
 -- Add index for faster queries
-CREATE INDEX on search_history(ip_address)
+CREATE INDEX ON search_history(ip_address);
 
 
 -- Trigger for auto-connecting Supabase Auth to Users
@@ -41,14 +43,18 @@ CREATE INDEX on search_history(ip_address)
 CREATE OR REPLACE FUNCTION public.handle_new_users()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSER INTO public.users (id, email, username, ip_address)
+    INSERT INTO public.users (id, email, username)
     VALUES (
         NEW.id,
         NEW.email,
-        NEW.raw_user_meta_data ->> 'username'
+        COALESCE(NEW.raw_user_meta_data ->> 'username', '')
     );
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE FUNCTION public.handle_new_users();
 
 
