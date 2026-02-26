@@ -13,7 +13,7 @@ const allowedOrigins = [
   'http://localhost:8000',
   'http://localhost:3000',
   'http://localhost:5173',
-  'https://yourdomain.com'
+  'https://geopoint-frontend.vercel.app'
 ];
 
 app.use(cors({
