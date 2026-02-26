@@ -24,8 +24,7 @@ export const AuthService = {
         }
 
         return {
-            token: data.session.access_token,
-            refreshToken: data.session.refresh_token,
+            access_token: data.session.access_token,
             user: data.user
         };
     },

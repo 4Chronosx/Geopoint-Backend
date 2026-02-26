@@ -37,6 +37,56 @@ ALTER TABLE geo_info ENABLE ROW LEVEL SECURITY;
 -- Add index for faster queries
 CREATE INDEX ON search_history(ip_address);
 
+-- RLS Policies: search_history
+CREATE POLICY "Users can insert their own searches"
+    ON search_history FOR INSERT
+    TO authenticated
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can read their own searches"
+    ON search_history FOR SELECT
+    TO authenticated
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own searches"
+    ON search_history FOR DELETE
+    TO authenticated
+    USING (auth.uid() = user_id);
+
+-- RLS Policies: geo_info (via search_history ownership)
+CREATE POLICY "Users can insert geo_info for their searches"
+    ON geo_info FOR INSERT
+    TO authenticated
+    WITH CHECK (
+        EXISTS (
+            SELECT 1 FROM search_history
+            WHERE search_history.id = search_id
+            AND search_history.user_id = auth.uid()
+        )
+    );
+
+CREATE POLICY "Users can read geo_info for their searches"
+    ON geo_info FOR SELECT
+    TO authenticated
+    USING (
+        EXISTS (
+            SELECT 1 FROM search_history
+            WHERE search_history.id = search_id
+            AND search_history.user_id = auth.uid()
+        )
+    );
+
+CREATE POLICY "Users can delete geo_info for their searches"
+    ON geo_info FOR DELETE
+    TO authenticated
+    USING (
+        EXISTS (
+            SELECT 1 FROM search_history
+            WHERE search_history.id = search_id
+            AND search_history.user_id = auth.uid()
+        )
+    );
+
 
 -- Trigger for auto-connecting Supabase Auth to Users
 

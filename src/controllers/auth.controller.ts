@@ -9,6 +9,7 @@ export const create = async(req: Request, res: Response) => {
     try {
         await AuthService.create(email, password, username);
         res.status(204).send();
+
     } catch (err: any) {
         console.error('signup error', err.message);
         res.status(500).json({ error: err.message });
@@ -18,11 +19,16 @@ export const create = async(req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const result = await AuthService.login(email, password);
-    res.json(result);
+    res.cookie('access_token', result.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 100
+    });
+    res.json({ user: result.user});
 }
 
 export const logout = async (req: Request, res: Response) => {
-    const token = req.headers.authorization?.split(' ')[1]!;
-    await AuthService.logout(token);
+    res.clearCookie('access_token');
     res.status(204).send()
 };
