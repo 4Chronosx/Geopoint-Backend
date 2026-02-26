@@ -4,7 +4,7 @@ import { authenticate } from "../middleware/middleware";
 
 const router = Router();
 router.get('/user', authenticate, getGeo)
-router.post('/search', authenticate, searchGeo)
+router.get('/search', authenticate, searchGeo)
 
 
 export default router;

@@ -12,7 +12,7 @@ export const getGeo = async(req: Request, res: Response) => {
 }
 
 export const searchGeo = async (req: Request, res: Response) => {
-    const { ip } = req.body;
+    const ip = req.query.ip as string;
     try {
         const result = await GeoService.search(ip);
         res.json(result);

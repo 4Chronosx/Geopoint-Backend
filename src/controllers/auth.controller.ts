@@ -2,6 +2,7 @@
 
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
+import { AuthRequest } from '../middleware/middleware';
 
 export const create = async(req: Request, res: Response) => {
     console.log('signup body', req.body);
@@ -22,7 +23,7 @@ export const login = async (req: Request, res: Response) => {
     res.cookie('access_token', result.access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'lax',
         maxAge: 60 * 60 * 100
     });
     res.json({ user: result.user});
@@ -31,4 +32,14 @@ export const login = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
     res.clearCookie('access_token');
     res.status(204).send()
+};
+
+export const getCurrentUser = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await AuthService.getCurrentUser(req.token!);
+        res.json({ user: result.user })
+    } catch (err: any) {
+        res.status(401).json({ message: 'Unauthorized' })
+    } 
+    
 };

@@ -9,10 +9,26 @@ const app = express()
 const PORT = 8000
 
 app.use(cookieParser())
+const allowedOrigins = [
+  'http://localhost:8000',
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://yourdomain.com'
+];
+
 app.use(cors({
-  origin: 'http://localhost:8000',
+  origin: function (origin, callback) {
+    // allow requests with no origin (Postman, curl, mobile apps)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
-}))
+}));
 app.use(express.json())
 
 app.use('/api', authRoutes);
