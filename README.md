@@ -7,6 +7,23 @@ This repository contains the backend server for the **Geopoint** application. It
 
 ---
 
+## 🔧 Seed Requests
+
+A simple HTTP request collection is provided in [`seed.http`](./seed.http) which you can use with VS Code's [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension or any other HTTP tool. It contains example payloads for registering a user.
+
+The default credentials in the file are:
+
+```
+email: user@example.com
+password: password123
+username: user123
+```
+
+After signing up you can login against `POST /api/login` using the same email/password to obtain an authentication cookie.
+
+
+---
+
 ## 🧱 Technology Stack
 
 - **Node.js** with **Express** (v5)
