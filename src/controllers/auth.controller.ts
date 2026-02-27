@@ -22,7 +22,7 @@ export const login = async (req: Request, res: Response) => {
     const result = await AuthService.login(email, password);
     res.cookie('access_token', result.access_token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'none',
         maxAge: 60 * 60 * 100
     });
