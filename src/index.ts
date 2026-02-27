@@ -31,6 +31,11 @@ app.use(cors({
 }));
 app.use(express.json())
 
+app.set('trust proxy', true);
+
+app.get('/home/users', (req, res) => {
+    res.json({ ip: req.ip });
+});
 app.use('/api', authRoutes);
 app.use('/home', geoRoutes);
 app.use('/search', dbRoutes);

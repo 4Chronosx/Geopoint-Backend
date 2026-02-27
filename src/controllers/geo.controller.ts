@@ -4,7 +4,8 @@ import { GeoService } from '../services/geo.service';
 
 export const getGeo = async(req: Request, res: Response) => {
     try {
-        const result = await GeoService.getCurrent();
+        const ip = req.ip as string;
+        const result = await GeoService.search(ip);
         res.json(result)
     } catch (err: any) {
         res.status(500).json({error: err.message})
