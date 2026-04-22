@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth.service';
 import { AuthRequest } from '../middleware/middleware';
 
 export const create = async(req: Request, res: Response) => {
-    console.log('signup body', req.body);
+    //console.log('signup body', req.body);
     const { email, password, username } = req.body; // accept username from client
     try {
         await AuthService.create(email, password, username);
